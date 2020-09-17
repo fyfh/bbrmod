@@ -145,9 +145,9 @@ struct bbr {
 /* Window length of bw filter (in rounds): */
 static const int bbr_bw_rtts = CYCLE_LEN + 7;
 /* Window length of min_rtt filter (in sec): */
-static const u32 bbr_min_rtt_win_sec = 5;
+static const u32 bbr_min_rtt_win_sec = 30;
 /* Minimum time (in ms) spent at bbr_cwnd_min_target in BBR_PROBE_RTT mode: */
-static const u32 bbr_probe_rtt_mode_ms = 100;
+static const u32 bbr_probe_rtt_mode_ms = 50;
 /* Skip TSO below the following bandwidth (bits/sec): */
 static const int bbr_min_tso_rate = 1024000;
 
@@ -156,7 +156,7 @@ static const int bbr_min_tso_rate = 1024000;
  * and send the same number of packets per RTT that an un-paced, slow-starting
  * Reno or CUBIC flow would:
  */
-static const int bbr_high_gain  = BBR_UNIT * 3000 / 1000 + 1;
+static const int bbr_high_gain  = BBR_UNIT * 5000 / 1000 + 1;
 /* The pacing gain of 1/high_gain in BBR_DRAIN is calculated to typically drain
  * the queue created in BBR_STARTUP in a single round:
  */
@@ -177,13 +177,13 @@ static const u32 bbr_cycle_rand = 7;
  * smooth functioning, a sliding window protocol ACKing every other packet
  * needs at least 4 packets in flight:
  */
-static const u32 bbr_cwnd_min_target = 4;
+static const u32 bbr_cwnd_min_target = 10;
 
 /* To estimate if BBR_STARTUP mode (i.e. high_gain) has filled pipe... */
 /* If bw has increased significantly (1.25x), there may be more bw available: */
 static const u32 bbr_full_bw_thresh = BBR_UNIT * 6 / 4;
 /* But after 3 rounds w/o significant bw growth, estimate pipe is full: */
-static const u32 bbr_full_bw_cnt = 3;
+static const u32 bbr_full_bw_cnt = 4;
 
 /* "long-term" ("LT") bandwidth estimator parameters... */
 /* The minimum number of rounds in an LT bw sampling interval: */
@@ -825,7 +825,7 @@ static void bbr_init(struct sock *sk)
 	u64 bw;
 
 	bbr->prior_cwnd = 0;
-	bbr->tso_segs_goal = 0;	 /* default segs per skb until first ACK */
+	bbr->tso_segs_goal = 1;	 /* default segs per skb until first ACK */
 	bbr->rtt_cnt = 0;
 	bbr->next_rtt_delivered = 0;
 	bbr->prev_ca_state = TCP_CA_Open;
