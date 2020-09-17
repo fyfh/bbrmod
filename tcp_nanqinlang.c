@@ -1,7 +1,9 @@
 /* tcp_nanqinlang
-
+ 
+ * edit:https://github.com/tcp-nanqinlang/generation-2/blob/master/tcp_nanqinlang2.c
+ 
  * Debian
-
+ 
  * general kernel
 
  × New BBR Congestion Control
