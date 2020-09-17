@@ -1,5 +1,5 @@
 /* tcp_nanqinlang
-
+ * edit: https://github.com/tcp-nanqinlang/generation-2
  * Debian
 
  * general kernel
